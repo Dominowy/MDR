@@ -11,7 +11,7 @@ namespace MDR.Application.Devices.Queries
         public DeviceType DeviceType { get; set; }
     }
 
-    public class GetAddFormQueryHandler(DeviceServiceFactory factory) : IRequestHandler<GetAddDeviceFormRequest, GetAddDeviceFormResponse>
+    public class GetAddDeviceFormHandler(DeviceServiceFactory factory) : IRequestHandler<GetAddDeviceFormRequest, GetAddDeviceFormResponse>
     {
         public async Task<GetAddDeviceFormResponse> Handle(GetAddDeviceFormRequest request, CancellationToken cancellationToken)
         {
@@ -23,6 +23,7 @@ namespace MDR.Application.Devices.Queries
             {
                 Form = new AddDeviceRequest
                 {
+                    Name = form.Name,
                     DeviceType = form.DeviceType,
                     Fields = [.. form.Fields.Select(f => new DeviceConfigFieldDto
                     {

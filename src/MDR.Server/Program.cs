@@ -31,6 +31,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapPost("/get", async (IMediator mediator, HttpContext httpContext, [FromBody] GetDeviceRequest request)
+    => await httpContext.Send(request, mediator))
+    .WithName("GetDevice")
+    .WithOpenApi();
+
+app.MapPost("/get-all", async (IMediator mediator, HttpContext httpContext, [FromBody] GetAllDevicesRequest request)
+    => await httpContext.Send(request, mediator))
+    .WithName("GetAllDevices")
+    .WithOpenApi();
+
 app.MapPost("/add/form", async (IMediator mediator, HttpContext httpContext, [FromBody] GetAddDeviceFormRequest request)
     => await httpContext.Send(request, mediator))
     .WithName("GetAddFormDevice")
@@ -39,6 +49,21 @@ app.MapPost("/add/form", async (IMediator mediator, HttpContext httpContext, [Fr
 app.MapPost("/add", async (IMediator mediator, HttpContext httpContext, [FromBody] AddDeviceRequest request) 
     => await httpContext.Send(request, mediator))
     .WithName("AddDevice")
+    .WithOpenApi();
+
+app.MapPost("/update/form", async (IMediator mediator, HttpContext httpContext, [FromBody] GetUpdateDeviceFormRequest request)
+    => await httpContext.Send(request, mediator))
+    .WithName("GetUpdateFormDevice")
+    .WithOpenApi();
+
+app.MapPost("/update", async (IMediator mediator, HttpContext httpContext, [FromBody] UpdateDeviceRequest request)
+    => await httpContext.Send(request, mediator))
+    .WithName("UpdateDevice")
+    .WithOpenApi();
+
+app.MapPost("/delete", async (IMediator mediator, HttpContext httpContext, [FromBody] DeleteDeviceRequest request)
+    => await httpContext.Send(request, mediator))
+    .WithName("DeleteDevice")
     .WithOpenApi();
 
 app.Run();

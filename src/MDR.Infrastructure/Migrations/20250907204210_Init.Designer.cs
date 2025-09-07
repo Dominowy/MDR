@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MDR.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250907174836_init")]
-    partial class init
+    [Migration("20250907204210_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,7 +46,7 @@ namespace MDR.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mas2Device");
+                    b.ToTable("Mas2");
                 });
 
             modelBuilder.Entity("MDR.Domain.Devices.Mases2.Mas2Data", b =>

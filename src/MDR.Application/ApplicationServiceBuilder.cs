@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MDR.Application.Devices.Services;
+using MDR.Domain.Devices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -16,10 +16,29 @@ namespace MDR.Application
 
             services.AddScoped<DeviceServiceFactory>();
 
-            services.AddScoped<Mas2Service>();
-            services.AddScoped<Mouse2Service>();
-            services.AddScoped<Mouse2BService>();
-            services.AddScoped<MouseComboService>();
+            services.AddScoped(sp =>
+            {
+                var factory = sp.GetRequiredService<DeviceServiceFactory>();
+                return factory.Create(DeviceType.MAS2);
+            });
+
+            services.AddScoped(sp =>
+            {
+                var factory = sp.GetRequiredService<DeviceServiceFactory>();
+                return factory.Create(DeviceType.MOUSE2);
+            });
+
+            services.AddScoped(sp =>
+            {
+                var factory = sp.GetRequiredService<DeviceServiceFactory>();
+                return factory.Create(DeviceType.MOUSE2B);
+            });
+
+            services.AddScoped(sp =>
+            {
+                var factory = sp.GetRequiredService<DeviceServiceFactory>();
+                return factory.Create(DeviceType.MOUSECOMBO);
+            });
 
             return services;
         }

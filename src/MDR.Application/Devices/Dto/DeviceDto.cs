@@ -8,5 +8,7 @@ namespace MDR.Application.Devices.Dto
         public DeviceType DeviceType { get; set; }
         public string Name { get; set; }
         public List<DeviceConfigFieldDto> Fields { get; set; }
+
+        public List<DeviceDataFieldDto> Datas { get; set; }
     }
 }

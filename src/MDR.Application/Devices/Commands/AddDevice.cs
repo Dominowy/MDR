@@ -1,5 +1,4 @@
 ﻿using MDR.Application.Devices.Dto;
-using MDR.Application.Devices.Queries;
 using MDR.Application.Devices.Services;
 using MDR.Application.Shared;
 using MediatR;
@@ -10,7 +9,7 @@ namespace MDR.Application.Devices.Commands
     {
     }
 
-    public class GetAddFormQueryHandler(DeviceServiceFactory factory) : IRequestHandler<AddDeviceRequest, CommandResult>
+    public class AddDeviceHandler(DeviceServiceFactory factory) : IRequestHandler<AddDeviceRequest, CommandResult>
     {
         public async Task<CommandResult> Handle(AddDeviceRequest request, CancellationToken cancellationToken)
         {

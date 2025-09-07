@@ -15,7 +15,7 @@ namespace MDR.Infrastructure.Context
         public DbSet<Mouse2BData> Mouse2BData { get; set; }
         public DbSet<MouseCombo> MouseCombo{ get; set; }
         public DbSet<MouseComboData> MouseComboData { get; set; }
-        public DbSet<Mas2> Mas2Device { get; set; }
+        public DbSet<Mas2> Mas2{ get; set; }
         public DbSet<Mas2Data> Mas2Data { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

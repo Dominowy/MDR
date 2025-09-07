@@ -43,7 +43,7 @@ namespace MDR.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mas2Device");
+                    b.ToTable("Mas2");
                 });
 
             modelBuilder.Entity("MDR.Domain.Devices.Mases2.Mas2Data", b =>

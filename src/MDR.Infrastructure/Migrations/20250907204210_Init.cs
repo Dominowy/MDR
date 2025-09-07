@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MDR.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Mas2Device",
+                name: "Mas2",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -23,7 +23,7 @@ namespace MDR.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Mas2Device", x => x.Id);
+                    table.PrimaryKey("PK_Mas2", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,9 +83,9 @@ namespace MDR.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Mas2Data", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Mas2Data_Mas2Device_DeviceId",
+                        name: "FK_Mas2Data_Mas2_DeviceId",
                         column: x => x.DeviceId,
-                        principalTable: "Mas2Device",
+                        principalTable: "Mas2",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -216,7 +216,7 @@ namespace MDR.Infrastructure.Migrations
                 name: "Reflectogram");
 
             migrationBuilder.DropTable(
-                name: "Mas2Device");
+                name: "Mas2");
 
             migrationBuilder.DropTable(
                 name: "Mouse2B");
