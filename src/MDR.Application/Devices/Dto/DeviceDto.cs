@@ -2,7 +2,7 @@
 
 namespace MDR.Application.Devices.Dto
 {
-    public class DeviceConfigDto
+    public class DeviceDto
     {
         public Guid Id { get; set; }
         public DeviceType DeviceType { get; set; }

@@ -4,8 +4,8 @@ namespace MDR.Application.Devices.Services
 {
     public interface IDeviceService
     {
-        DeviceConfigDto GetById(Guid id, CancellationToken cancellationToken);
-        DeviceConfigDto GetAll(CancellationToken cancellationToken);
+        Task<DeviceConfigDto> GetById(Guid id, CancellationToken cancellationToken);
+        Task<List<DeviceConfigDto>> GetAll(CancellationToken cancellationToken);
         DeviceConfigDto GetAddForm(CancellationToken cancellationToken);
         Task<DeviceConfigDto> GetEditForm(Guid deviceId, CancellationToken cancellationToken);
         Task<Guid> Add(DeviceConfigDto deviceConfigDto, CancellationToken cancellationToken);

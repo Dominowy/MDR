@@ -12,12 +12,35 @@ namespace MDR.Application.Devices.Services
     {
         readonly string[] fieldProperties = { nameof(Mas2.TempAlarmThreshold), nameof(Mas2.HumidityAlarmThreshold) };
 
-        public DeviceConfigDto GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<DeviceDto> GetById(Guid id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var device = await dbContext.Set<Mas2>()
+                .Include(m => m.DeviceDatas)
+                .GetExistingAsync(d => d.Id == id, cancellationToken);
+
+            var fields = fieldProperties
+                .Select(p =>
+                {
+                    var propInfo = device.GetType().GetProperty(p);
+                    return new DeviceConfigFieldDto
+                    {
+                        Name = p,
+                        Value = propInfo?.GetValue(device),
+                        Type = propInfo?.PropertyType.Name ?? "Unknown"
+                    };
+                })
+                .ToList();
+
+            return new DeviceDto
+            {
+                Id = device.Id,
+                DeviceType = DeviceType.MAS2,
+                Name = device.Name,
+                Fields = fields
+            };
         }
 
-        public DeviceConfigDto GetAll(CancellationToken cancellationToken)
+        public Task<List<DeviceConfigDto>> GetAll(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -66,7 +89,9 @@ namespace MDR.Application.Devices.Services
 
             return new DeviceConfigDto
             {
+                Id = device.Id,
                 DeviceType = DeviceType.MAS2,
+                Name = device.Name,
                 Fields = fields
             };
         }
@@ -82,10 +107,19 @@ namespace MDR.Application.Devices.Services
                 var prop = typeof(Mas2).GetProperty(field.Name);
                 if (prop != null && prop.CanWrite)
                 {
-                    var convertedValue = field.Value != null
-                        ? Convert.ChangeType(field.Value, prop.PropertyType)
-                        : default;
-                    prop.SetValue(device, convertedValue);
+                    object? value = null;
+                    if (field.Value != null)
+                    {
+                        value = field.Type switch
+                        {
+                            "Double" => Convert.ToDouble(field.Value),
+                            "Int32" => Convert.ToInt32(field.Value),
+                            "String" => Convert.ToString(field.Value),
+                            _ => field.Value
+                        };
+                    }
+
+                    prop.SetValue(device, value);
                 }
             }
 
@@ -95,14 +129,45 @@ namespace MDR.Application.Devices.Services
             return device.Id;
         }
 
-        public Task<Guid> Update(DeviceConfigDto deviceConfigDto, CancellationToken cancellationToken)
+        public async Task<Guid> Update(DeviceConfigDto deviceConfigDto, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var device = await dbContext.Set<Mas2>()
+                .GetExistingAsync(d => d.Id == deviceConfigDto.Id, cancellationToken);
+
+            foreach (var field in deviceConfigDto.Fields)
+            {
+                var prop = typeof(Mas2).GetProperty(field.Name, BindingFlags.Public | BindingFlags.Instance);
+                if (prop != null && prop.CanWrite)
+                {
+                    object? value = null;
+
+                    if (field.Value != null)
+                    {
+                        value = field.Type switch
+                        {
+                            "Double" => Convert.ToDouble(field.Value),
+                            "Int32" => Convert.ToInt32(field.Value),
+                            "String" => Convert.ToString(field.Value),
+                            _ => field.Value
+                        };
+                    }
+
+                    prop.SetValue(device, value);
+                }
+            }
+
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+            return device.Id;
         }
 
-        public Task Delete(Guid deviceId, CancellationToken cancellationToken)
+        public async Task Delete(Guid deviceId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var device = await dbContext.Set<Mas2>()
+                .GetExistingAsync(d => d.Id == deviceId, cancellationToken);
+
+            dbContext.Set<Mas2>().Remove(device);
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
