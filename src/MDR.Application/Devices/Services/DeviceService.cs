@@ -12,6 +12,7 @@ namespace MDR.Application.Devices.Services
         public async Task<DeviceDto> GetById(Guid id, CancellationToken cancellationToken)
         {
             var device = await dbContext.Set<Device>()
+               .AsNoTracking()
                .GetExistingAsync(d => d.Id == id, cancellationToken);
 
             var config = factory.ConvertConfig(device.DeviceType, device.Config, cancellationToken);
@@ -21,7 +22,9 @@ namespace MDR.Application.Devices.Services
 
         public async Task<List<DeviceDto>> GetAll(CancellationToken cancellationToken)
         {
-            var devices = await dbContext.Set<Device>().ToListAsync(cancellationToken);
+            var devices = await dbContext.Set<Device>()
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
 
             var deviceDtos = devices
             .Select(d =>
@@ -37,7 +40,10 @@ namespace MDR.Application.Devices.Services
 
         public async Task<List<DeviceDataDto>> GetAllData(CancellationToken cancellationToken)
         {
-            var devices = await dbContext.Set<DeviceData>().ToListAsync(cancellationToken);
+            var devices = await dbContext.Set<DeviceData>()
+                .AsNoTracking()
+                .Include(m => m.Device)
+                .ToListAsync(cancellationToken);
 
             var deviceDataDtos = devices
             .Select(d =>
@@ -49,19 +55,6 @@ namespace MDR.Application.Devices.Services
             .ToList();
 
             return deviceDataDtos;
-        }
-
-        public async Task<Guid> Update(DeviceDto device, CancellationToken cancellationToken)
-        {
-            var aggregate = await dbContext.Set<Device>()
-               .GetExistingAsync(d => d.Id == device.Id, cancellationToken);
-
-            aggregate.SetName(device.Name);
-            aggregate.SetConfig(JsonSerializer.Serialize(device.Config));
-
-            await dbContext.SaveChangesAsync(cancellationToken);
-
-            return device.Id;
         }
 
         public async Task<Guid> Add(DeviceDto device, CancellationToken cancellationToken)
@@ -77,6 +70,32 @@ namespace MDR.Application.Devices.Services
             return device.Id;
         }
 
+        public async Task<Guid> AddData(DeviceDataDto data, CancellationToken cancellationToken)
+        {
+            var device = await dbContext.Set<Device>()
+               .GetExistingAsync(d => d.Id == data.DeviceId, cancellationToken);
+
+            var entity = new DeviceData(JsonSerializer.Serialize(data.Data));
+
+            device.SetDeviceData(entity);
+
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+            return device.Id;
+        }
+
+        public async Task<Guid> Update(DeviceDto device, CancellationToken cancellationToken)
+        {
+            var aggregate = await dbContext.Set<Device>()
+               .GetExistingAsync(d => d.Id == device.Id, cancellationToken);
+
+            aggregate.SetName(device.Name);
+            aggregate.SetConfig(JsonSerializer.Serialize(device.Config));
+
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+            return device.Id;
+        }
 
         public async Task Delete(Guid id, CancellationToken ct)
         {

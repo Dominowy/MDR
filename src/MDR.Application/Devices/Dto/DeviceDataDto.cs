@@ -5,6 +5,8 @@ namespace MDR.Application.Devices.Dto
     public class DeviceDataDto
     {
         public Guid Id { get; set; }
+
+        public Guid DeviceId { get; set; }
         public object Data { get; set; }
         public DateTime Timestamp { get; set; }
 
@@ -13,6 +15,7 @@ namespace MDR.Application.Devices.Dto
             return new()
             {
                 Id = deviceData.Id,
+                DeviceId = deviceData.DeviceId,
                 Data = data,
                 Timestamp = deviceData.Timestamp
             };

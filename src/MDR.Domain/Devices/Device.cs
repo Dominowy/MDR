@@ -35,5 +35,10 @@
             if (!anyChange) return;
             Config = config;
         }
+
+        public void SetDeviceData(DeviceData data)
+        {
+            DeviceDatas.Add(data);
+        }
     }
 }

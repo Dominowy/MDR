@@ -38,6 +38,13 @@ namespace MDR.Server.Middleware
                 context.Response.StatusCode = 404;
                 await context.Response.WriteAsync(notFoundException.Message);
             }
+            catch (UnsupportedException unsupportedException)
+            {
+                logger.LogError(unsupportedException, unsupportedException.Message);
+
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(unsupportedException.Message);
+            }
             catch (Exception e)
             {
                 logger.LogError(e, e.Message);

@@ -8,5 +8,15 @@
         public virtual Device Device { get; set; }
 
         public DateTime Timestamp { get; set; }
+
+        protected DeviceData() : base()
+        {
+        }
+
+        public DeviceData(string data) : base()
+        {
+            Data = data;
+            Timestamp = DateTime.UtcNow;
+        }
     }
 }

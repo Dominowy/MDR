@@ -9,6 +9,8 @@ namespace MDR.Application.Contracts
 
         Task<List<DeviceDataDto>> GetAllData(CancellationToken cancellationToken);
         Task<Guid> Add(DeviceDto device, CancellationToken cancellationToken);
+        Task<Guid> AddData(DeviceDataDto data, CancellationToken cancellationToken);
+
         Task<Guid> Update(DeviceDto device, CancellationToken cancellationToken);
         Task Delete(Guid id, CancellationToken cancellationToken);
 
