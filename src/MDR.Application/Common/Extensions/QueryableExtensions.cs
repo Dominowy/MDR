@@ -1,8 +1,8 @@
-﻿using MDR.Application.Exceptions;
+﻿using MDR.Application.Common.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace MDR.Application.Extensions
+namespace MDR.Application.Common.Extensions
 {
     public static class QueryableExtensions
     {

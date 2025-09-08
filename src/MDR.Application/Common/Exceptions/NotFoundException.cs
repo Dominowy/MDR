@@ -1,4 +1,4 @@
-﻿namespace MDR.Application.Exceptions
+﻿namespace MDR.Application.Common.Exceptions
 {
     public class NotFoundException(string message) : Exception(message)
     {

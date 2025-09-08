@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using MDR.Application.Contracts;
+using MDR.Application.Devices.Services;
 using MDR.Domain.Devices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,31 +16,8 @@ namespace MDR.Application
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.AddScoped<DeviceServiceFactory>();
-
-            services.AddScoped(sp =>
-            {
-                var factory = sp.GetRequiredService<DeviceServiceFactory>();
-                return factory.Create(DeviceType.MAS2);
-            });
-
-            services.AddScoped(sp =>
-            {
-                var factory = sp.GetRequiredService<DeviceServiceFactory>();
-                return factory.Create(DeviceType.MOUSE2);
-            });
-
-            services.AddScoped(sp =>
-            {
-                var factory = sp.GetRequiredService<DeviceServiceFactory>();
-                return factory.Create(DeviceType.MOUSE2B);
-            });
-
-            services.AddScoped(sp =>
-            {
-                var factory = sp.GetRequiredService<DeviceServiceFactory>();
-                return factory.Create(DeviceType.MOUSECOMBO);
-            });
+            services.AddScoped<DeviceFactory>();
+            services.AddScoped<IDeviceService, DeviceService>();
 
             return services;
         }

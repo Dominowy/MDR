@@ -1,4 +1,4 @@
-﻿namespace MDR.Application.Shared
+﻿namespace MDR.Application
 {
     public class CommandResult
     {

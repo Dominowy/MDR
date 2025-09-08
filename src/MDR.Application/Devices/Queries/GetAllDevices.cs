@@ -1,21 +1,17 @@
-﻿using MDR.Application.Devices.Dto;
-using MDR.Application.Devices.Services;
-using MDR.Domain.Devices;
+﻿using MDR.Application.Contracts;
+using MDR.Application.Devices.Dto;
 using MediatR;
 
 namespace MDR.Application.Devices.Queries
 {
     public class GetAllDevicesRequest : IRequest<GetAllDevicesResponse>
     {
-        public DeviceType DeviceType { get; set; }
     }
 
-    public class GetAllDevicesHandler(DeviceServiceFactory factory) : IRequestHandler<GetAllDevicesRequest, GetAllDevicesResponse>
+    public class GetAllDevicesHandler(IDeviceService service) : IRequestHandler<GetAllDevicesRequest, GetAllDevicesResponse>
     {
         public async Task<GetAllDevicesResponse> Handle(GetAllDevicesRequest request, CancellationToken cancellationToken)
         {
-            var service = factory.Create(request.DeviceType);
-
             var devices = await service.GetAll(cancellationToken);
 
             return new GetAllDevicesResponse

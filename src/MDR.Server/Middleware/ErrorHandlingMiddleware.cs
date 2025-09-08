@@ -1,4 +1,4 @@
-﻿using MDR.Application.Exceptions;
+﻿using MDR.Application.Common.Exceptions;
 
 namespace MDR.Server.Middleware
 {

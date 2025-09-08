@@ -51,6 +51,11 @@ app.MapPost("/add", async (IMediator mediator, HttpContext httpContext, [FromBod
     .WithName("AddDevice")
     .WithOpenApi();
 
+app.MapPost("/add/validate", async (IMediator mediator, HttpContext httpContext, [FromBody] AddDeviceRequest request)
+    => await httpContext.Validate(request, mediator))
+    .WithName("AddDevice")
+    .WithOpenApi();
+
 app.MapPost("/update/form", async (IMediator mediator, HttpContext httpContext, [FromBody] GetUpdateDeviceFormRequest request)
     => await httpContext.Send(request, mediator))
     .WithName("GetUpdateFormDevice")
@@ -61,7 +66,27 @@ app.MapPost("/update", async (IMediator mediator, HttpContext httpContext, [From
     .WithName("UpdateDevice")
     .WithOpenApi();
 
+app.MapPost("/update/validate", async (IMediator mediator, HttpContext httpContext, [FromBody] UpdateDeviceRequest request)
+    => await httpContext.Validate(request, mediator))
+    .WithName("UpdateDevice")
+    .WithOpenApi();
+
 app.MapPost("/delete", async (IMediator mediator, HttpContext httpContext, [FromBody] DeleteDeviceRequest request)
+    => await httpContext.Send(request, mediator))
+    .WithName("DeleteDevice")
+    .WithOpenApi();
+
+app.MapPost("/get-data-from-device", async (IMediator mediator, HttpContext httpContext, [FromBody] GetDataFromDeviceRequest request)
+    => await httpContext.Send(request, mediator))
+    .WithName("DeleteDevice")
+    .WithOpenApi();
+
+app.MapPost("/send-data-from-device", async (IMediator mediator, HttpContext httpContext, [FromBody] SendDataFromDeviceRequest request)
+    => await httpContext.Send(request, mediator))
+    .WithName("DeleteDevice")
+    .WithOpenApi();
+
+app.MapPost("/get-all-data", async (IMediator mediator, HttpContext httpContext, [FromBody] GetAllDataRequest request)
     => await httpContext.Send(request, mediator))
     .WithName("DeleteDevice")
     .WithOpenApi();

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MDR.Domain.Devices
+﻿namespace MDR.Domain.Devices
 {
     public class DeviceData : BaseEntity
     {
+        public string Data { get; set; }
+
+        public Guid DeviceId { get; set; }
+        public virtual Device Device { get; set; }
+
         public DateTime Timestamp { get; set; }
     }
 }
